@@ -8,7 +8,8 @@ export default function DailyQuiz(){
   const [quiz, setQuiz] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [timeLeft, setTimeLeft] = useState(600);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
   const nav = useNavigate();
 
   useEffect(()=>{
@@ -18,6 +19,7 @@ export default function DailyQuiz(){
         setQuiz(q);
         setAnswers(new Array(q.questions.length).fill(null));
       } catch(e){
+        console.error("Failed to load quiz:", e);
         setQuiz(null);
       } finally {
         setLoading(false);
@@ -30,17 +32,44 @@ export default function DailyQuiz(){
     setAnswers(prev => { const c = [...prev]; c[i]=opt; return c; });
   };
 
-  const onExpire = () => submit();
+  const onExpire = () => {
+    if (!submitting) {
+      submit();
+    }
+  };
 
   const submit = async () => {
-    if (!quiz) return;
-    const payload = { quizId: quiz._id, answers, type:"daily" };
+    if (!quiz || submitting) return;
+    
     try {
+      setSubmitting(true);
+      setError("");
+      
+      const payload = { 
+        quizId: quiz._id, 
+        answers, 
+        type: "daily" 
+      };
+      
+      console.log("📤 Submitting quiz:", payload);
+      
       const res = await api.post("/dailyquiz/submit", payload);
-      const attemptId = res.attemptId || res._id || res.id;
-      nav(`/result/${attemptId}`);
-    } catch(err){
-      alert("Submit failed");
+      console.log("✅ Submit response:", res);
+      
+      const attemptId = res.attemptId;
+      
+      if (attemptId) {
+        nav(`/result/${attemptId}`);
+      } else {
+        throw new Error("No attempt ID returned from server");
+      }
+      
+    } catch(err) {
+      console.error("💥 Submit failed:", err);
+      console.error("📋 Error details:", err.response?.data);
+      
+      setError("Failed to submit quiz: " + (err.response?.data?.message || err.message));
+      setSubmitting(false);
     }
   };
 
@@ -108,6 +137,25 @@ export default function DailyQuiz(){
           </div>
         </div>
 
+        {/* Error Message */}
+        {error && (
+          <div className="glass p-4 rounded-2xl border border-red-500/30 bg-red-500/10 mb-6">
+            <div className="flex items-center gap-3">
+              <span className="text-red-400 text-xl">⚠️</span>
+              <div>
+                <div className="text-red-400 font-semibold">Submission Error</div>
+                <div className="text-red-300/80 text-sm">{error}</div>
+              </div>
+              <button 
+                onClick={() => setError("")}
+                className="ml-auto text-red-400 hover:text-red-300"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Questions */}
         <div className="space-y-4">
           {quiz.questions.map((q,i)=>(
@@ -121,7 +169,7 @@ export default function DailyQuiz(){
             <div className="text-white/70">
               {allAnswered ? (
                 <span className="text-green-400 flex items-center gap-2">
-                  <span>✅</span> All questions answered!
+                  <span>✅</span> All questions answered! Ready to submit
                 </span>
               ) : (
                 `${quiz.questions.length - answeredCount} questions remaining`
@@ -129,11 +177,20 @@ export default function DailyQuiz(){
             </div>
             <button 
               onClick={submit} 
-              disabled={!allAnswered}
+              disabled={!allAnswered || submitting}
               className="px-8 py-3 bg-gradient-to-r from-green-500 to-cyan-500 rounded-xl font-semibold hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             >
-              <span>🚀</span>
-              Submit Quiz
+              {submitting ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Submitting...
+                </>
+              ) : (
+                <>
+                  <span>🚀</span>
+                  Submit Quiz
+                </>
+              )}
             </button>
           </div>
         </div>
