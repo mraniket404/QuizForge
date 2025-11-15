@@ -182,7 +182,7 @@ export default function Profile(){
     : 0;
 
   return (
-    <div className="min-h-screen py-8 px-4 relative">
+    <div className="min-h-screen py-8 px-4 relative my-16">
       {/* Background */}
       <div className="fixed inset-0 -z-10">
         <div className="absolute top-20 right-10 w-80 h-80 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-full blur-3xl animate-float"></div>

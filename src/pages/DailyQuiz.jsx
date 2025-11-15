@@ -97,7 +97,7 @@ export default function DailyQuiz(){
   const allAnswered = answeredCount === quiz.questions.length;
 
   return (
-    <div className="min-h-screen py-8 px-4 relative max-w-4xl mx-auto my-8">
+    <div className="min-h-screen py-8 px-4 relative max-w-4xl mx-auto my-16">
       {/* Background */}
       <div className="fixed inset-0 -z-10">
         <div className="absolute top-20 right-10 w-80 h-80 bg-gradient-to-r from-orange-500/10 to-red-500/10 rounded-full blur-3xl animate-float"></div>
