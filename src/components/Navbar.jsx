@@ -7,14 +7,17 @@ export default function Navbar(){
   const nav = useNavigate();
   const location = useLocation();
 
-  const handleLogout = () => { logout(); nav("/"); };
+  const handleLogout = () => { 
+    logout(); 
+    nav("/login"); 
+  };
 
   const isActive = (path) => location.pathname === path;
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 py-4 shadow-sm glass border-b border-white/10 backdrop-blur-md">
       <div className="container mx-auto px-4 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3">
+        <Link to={user ? "/" : "/login"} className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center font-bold">QF</div>
           <div>
             <div className="text-lg font-bold">QuizForge</div>
@@ -22,7 +25,7 @@ export default function Navbar(){
           </div>
         </Link>
 
-        {/* Streak Display in Navbar - Bigger Size */}
+        {/* Streak Display in Navbar - Only show when user is logged in */}
         {user && user.streak > 0 && (
           <div className="flex items-center gap-3 bg-orange-500/20 px-4 py-3 rounded-full border border-orange-500/30">
             <span className="text-2xl text-orange-400 animate-pulse">🔥</span>
@@ -34,40 +37,41 @@ export default function Navbar(){
         )}
 
         <nav className="flex items-center gap-3">
-          <Link 
-            to="/" 
-            className={`px-4 py-2 rounded-lg transition-all duration-200 ${
-              isActive("/") ? "bg-blue-500/20 text-blue-400 border border-blue-500/30" : "hover:bg-white/5"
-            }`}
-          >
-            Home
-          </Link>
-          <Link 
-            to="/daily" 
-            className={`px-4 py-2 rounded-lg transition-all duration-200 ${
-              isActive("/daily") ? "bg-orange-500/20 text-orange-400 border border-orange-500/30" : "hover:bg-white/5"
-            }`}
-          >
-            Daily
-          </Link>
-          <Link 
-            to="/create" 
-            className={`px-4 py-2 rounded-lg transition-all duration-200 ${
-              isActive("/create") ? "bg-green-500/20 text-green-400 border border-green-500/30" : "hover:bg-white/5"
-            }`}
-          >
-            Create
-          </Link>
-          <Link 
-            to="/browse" 
-            className={`px-4 py-2 rounded-lg transition-all duration-200 ${
-              isActive("/browse") ? "bg-purple-500/20 text-purple-400 border border-purple-500/30" : "hover:bg-white/5"
-            }`}
-          >
-            Browse
-          </Link>
+          {/* Show navigation links only when user is logged in */}
           {user ? (
             <>
+              <Link 
+                to="/" 
+                className={`px-4 py-2 rounded-lg transition-all duration-200 ${
+                  isActive("/") ? "bg-blue-500/20 text-blue-400 border border-blue-500/30" : "hover:bg-white/5"
+                }`}
+              >
+                Home
+              </Link>
+              <Link 
+                to="/daily" 
+                className={`px-4 py-2 rounded-lg transition-all duration-200 ${
+                  isActive("/daily") ? "bg-orange-500/20 text-orange-400 border border-orange-500/30" : "hover:bg-white/5"
+                }`}
+              >
+                Daily
+              </Link>
+              <Link 
+                to="/create" 
+                className={`px-4 py-2 rounded-lg transition-all duration-200 ${
+                  isActive("/create") ? "bg-green-500/20 text-green-400 border border-green-500/30" : "hover:bg-white/5"
+                }`}
+              >
+                Create
+              </Link>
+              <Link 
+                to="/browse" 
+                className={`px-4 py-2 rounded-lg transition-all duration-200 ${
+                  isActive("/browse") ? "bg-purple-500/20 text-purple-400 border border-purple-500/30" : "hover:bg-white/5"
+                }`}
+              >
+                Browse
+              </Link>
               <Link 
                 to="/profile" 
                 className={`px-4 py-2 rounded-lg transition-all duration-200 ${

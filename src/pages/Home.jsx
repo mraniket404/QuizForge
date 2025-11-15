@@ -65,7 +65,7 @@ export default function Home(){
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl w-full">
             {/* Daily Challenge Card */}
             <Link 
-              to={user ? "/daily" : "/login"} 
+              to="/daily" 
               className="group relative bg-gradient-to-br from-blue-600/15 to-purple-600/15 p-6 rounded-3xl border border-blue-500/20 hover:border-blue-400/40 transition-all duration-500 hover:scale-[1.02] backdrop-blur-sm"
             >
               <div className="relative z-10">
@@ -91,15 +91,9 @@ export default function Home(){
                   <span className="px-4 py-2 bg-white/10 rounded-full text-sm font-medium backdrop-blur-sm border border-white/10">
                     🎯 10 questions
                   </span>
-                  {user ? (
-                    <button className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl font-bold shadow-lg shadow-orange-500/30 group-hover:scale-105 transition-all duration-300">
-                      Start Quiz
-                    </button>
-                  ) : (
-                    <button className="px-6 py-3 border-2 border-white/30 rounded-xl font-bold backdrop-blur-sm group-hover:bg-white/10 transition-all duration-300">
-                      Login to Play
-                    </button>
-                  )}
+                  <button className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl font-bold shadow-lg shadow-orange-500/30 group-hover:scale-105 transition-all duration-300">
+                    Start Quiz
+                  </button>
                 </div>
               </div>
             </Link>
@@ -233,42 +227,17 @@ export default function Home(){
           </div>
         </div>
 
-        {/* Auth Section */}
+        {/* Welcome Message */}
         <div className="flex justify-center">
           <div className="max-w-2xl w-full">
-            {!user ? (
-              <div className="relative bg-gradient-to-r from-blue-600/10 to-purple-600/10 p-8 rounded-3xl border border-blue-500/20 text-center backdrop-blur-sm">
-                <h3 className="text-3xl font-bold mb-4 bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent">
-                  Ready to Begin Your Journey?
-                </h3>
-                <p className="text-white/70 mb-6 text-lg leading-relaxed font-light">
-                  Join our community of learners and track your progress
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                  <Link 
-                    to="/register" 
-                    className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl font-bold text-lg shadow-2xl shadow-blue-500/30 hover:scale-105 transition-all duration-300 w-full sm:w-auto text-center"
-                  >
-                    🚀 Start Learning Free
-                  </Link>
-                  <Link 
-                    to="/login" 
-                    className="px-8 py-4 border-2 border-white/30 rounded-2xl font-bold text-lg backdrop-blur-sm hover:bg-white/10 transition-all duration-300 w-full sm:w-auto text-center"
-                  >
-                    🔑 Existing Account
-                  </Link>
-                </div>
-              </div>
-            ) : (
-              <div className="relative bg-gradient-to-r from-green-600/10 to-cyan-600/10 p-6 rounded-3xl border border-green-500/20 text-center backdrop-blur-sm">
-                <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-green-300 to-cyan-400 bg-clip-text text-transparent">
-                  Welcome back, {user.name || user.username}! 👋
-                </h3>
-                <p className="text-white/70 text-lg font-light">
-                  Continue your learning adventure today!
-                </p>
-              </div>
-            )}
+            <div className="relative bg-gradient-to-r from-green-600/10 to-cyan-600/10 p-6 rounded-3xl border border-green-500/20 text-center backdrop-blur-sm">
+              <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-green-300 to-cyan-400 bg-clip-text text-transparent">
+                Welcome back, {user.name || user.username}! 👋
+              </h3>
+              <p className="text-white/70 text-lg font-light">
+                Continue your learning adventure today!
+              </p>
+            </div>
           </div>
         </div>
       </div>
