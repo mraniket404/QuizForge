@@ -406,7 +406,7 @@ export default function Profile(){
               <div className="space-y-4">
                 {profile.attempts && profile.attempts.length > 0 ? (
                   profile.attempts.slice(0, 5).map(attempt => (
-                    <div key={attempt._id} className="p-4 bg-white/5 rounded-xl border border-white/10 hover:border-white/20 transition-all duration-300">
+                    <div key={attempt._id || attempt.date} className="p-4 bg-white/5 rounded-xl border border-white/10 hover:border-white/20 transition-all duration-300">
                       <div className="flex justify-between items-start mb-2">
                         <div className="flex items-center gap-2">
                           <div className={`w-3 h-3 rounded-full ${
