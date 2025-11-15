@@ -11,7 +11,7 @@ export default function DailyQuiz(){
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const nav = useNavigate();
-
+  
   useEffect(()=>{
     async function load(){
       try {
@@ -72,7 +72,7 @@ export default function DailyQuiz(){
       setSubmitting(false);
     }
   };
-
+ 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="text-center">
@@ -97,7 +97,7 @@ export default function DailyQuiz(){
   const allAnswered = answeredCount === quiz.questions.length;
 
   return (
-    <div className="min-h-screen py-8 px-4 relative">
+    <div className="min-h-screen py-8 px-4 relative max-w-4xl mx-auto my-8">
       {/* Background */}
       <div className="fixed inset-0 -z-10">
         <div className="absolute top-20 right-10 w-80 h-80 bg-gradient-to-r from-orange-500/10 to-red-500/10 rounded-full blur-3xl animate-float"></div>
@@ -183,7 +183,7 @@ export default function DailyQuiz(){
               {submitting ? (
                 <>
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  Submitting...
+                  Submitting....
                 </>
               ) : (
                 <>

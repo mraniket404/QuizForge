@@ -5,7 +5,6 @@ import api from "../utils/api";
 
 export default function Home(){
   const { user } = useContext(AuthContext);
-  const [streak, setStreak] = useState(user?.streak || 0);
   const [leaderboard, setLeaderboard] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -20,10 +19,6 @@ export default function Home(){
           console.log("Leaderboard not available");
           setLeaderboard([]);
         }
-
-        // Don't try to load profile - let the AuthContext handle user state
-        // The 401 will be handled by the API interceptor
-        
       } catch(e){
         console.log("Home load error:", e);
       } finally {
@@ -31,7 +26,7 @@ export default function Home(){
       }
     }
     load();
-  }, []); // Remove user dependency to avoid loops
+  }, []);
 
   if (loading) {
     return (
@@ -52,33 +47,39 @@ export default function Home(){
         <div className="absolute top-40 right-20 w-96 h-96 bg-gradient-to-r from-purple-500/5 to-pink-500/5 rounded-full blur-3xl animate-float" style={{animationDelay: '2s'}}></div>
       </div>
 
-      <div className="relative z-10 space-y-8 max-w-7xl mx-auto px-4 py-8">
+      {/* Main Content with Navbar Spacing */}
+      <div className="relative z-10 pt-24 pb-8 px-4">
         {/* Header Section */}
-        <div className="text-center space-y-6">
-          <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent">
+        <div className="text-center space-y-6 mb-12">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent">
             QuizForge
           </h1>
           
-          <p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto leading-relaxed font-light">
+          <p className="text-lg sm:text-xl md:text-2xl text-white/80 max-w-3xl mx-auto leading-relaxed font-light">
             Where <span className="text-transparent bg-gradient-to-r from-yellow-300 to-orange-400 bg-clip-text font-semibold">knowledge meets fun</span>
           </p>
         </div>
 
-        {/* Stats & Main Actions */}
-        <div className="grid lg:grid-cols-4 gap-8 items-start">
-          <div className="lg:col-span-3 grid md:grid-cols-2 gap-6">
+        {/* Main Cards Grid */}
+        <div className="flex justify-center mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl w-full">
+            {/* Daily Challenge Card */}
             <Link 
               to={user ? "/daily" : "/login"} 
-              className="group relative bg-gradient-to-br from-blue-600/15 to-purple-600/15 p-8 rounded-3xl border border-blue-500/20 hover:border-blue-400/40 transition-all duration-500 hover:scale-[1.02] backdrop-blur-sm"
+              className="group relative bg-gradient-to-br from-blue-600/15 to-purple-600/15 p-6 rounded-3xl border border-blue-500/20 hover:border-blue-400/40 transition-all duration-500 hover:scale-[1.02] backdrop-blur-sm"
             >
               <div className="relative z-10">
-                <div className="flex items-center gap-4 mb-6">
+                <div className="flex items-center gap-4 mb-4">
                   <div className="w-14 h-14 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/30">
                     <span className="text-2xl">🔥</span>
                   </div>
                   <div>
-                    <div className="text-2xl font-bold bg-gradient-to-r from-orange-300 to-red-400 bg-clip-text text-transparent">Daily Challenge</div>
-                    <div className="text-sm text-white/60 font-medium">Fresh questions every 24h</div>
+                    <div className="text-2xl font-bold bg-gradient-to-r from-orange-300 to-red-400 bg-clip-text text-transparent">
+                      Daily Challenge
+                    </div>
+                    <div className="text-sm text-white/60 font-medium">
+                      Fresh questions every 24h
+                    </div>
                   </div>
                 </div>
                 
@@ -91,11 +92,11 @@ export default function Home(){
                     🎯 10 questions
                   </span>
                   {user ? (
-                    <button className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl font-bold shadow-lg shadow-orange-500/30 group-hover:scale-105 transition-all duration-300">
+                    <button className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl font-bold shadow-lg shadow-orange-500/30 group-hover:scale-105 transition-all duration-300">
                       Start Quiz
                     </button>
                   ) : (
-                    <button className="px-8 py-3 border-2 border-white/30 rounded-xl font-bold backdrop-blur-sm group-hover:bg-white/10 transition-all duration-300">
+                    <button className="px-6 py-3 border-2 border-white/30 rounded-xl font-bold backdrop-blur-sm group-hover:bg-white/10 transition-all duration-300">
                       Login to Play
                     </button>
                   )}
@@ -103,18 +104,23 @@ export default function Home(){
               </div>
             </Link>
 
+            {/* Create Quiz Card */}
             <Link 
               to="/create" 
-              className="group relative bg-gradient-to-br from-green-600/15 to-cyan-600/15 p-8 rounded-3xl border border-green-500/20 hover:border-green-400/40 transition-all duration-500 hover:scale-[1.02] backdrop-blur-sm"
+              className="group relative bg-gradient-to-br from-green-600/15 to-cyan-600/15 p-6 rounded-3xl border border-green-500/20 hover:border-green-400/40 transition-all duration-500 hover:scale-[1.02] backdrop-blur-sm"
             >
               <div className="relative z-10">
-                <div className="flex items-center gap-4 mb-6">
+                <div className="flex items-center gap-4 mb-4">
                   <div className="w-14 h-14 bg-gradient-to-br from-green-400 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg shadow-green-500/30">
                     <span className="text-2xl">✍️</span>
                   </div>
                   <div>
-                    <div className="text-2xl font-bold bg-gradient-to-r from-green-300 to-cyan-400 bg-clip-text text-transparent">Create Quiz</div>
-                    <div className="text-sm text-white/60 font-medium">Unleash your creativity</div>
+                    <div className="text-2xl font-bold bg-gradient-to-r from-green-300 to-cyan-400 bg-clip-text text-transparent">
+                      Create Quiz
+                    </div>
+                    <div className="text-sm text-white/60 font-medium">
+                      Unleash your creativity
+                    </div>
                   </div>
                 </div>
                 
@@ -126,77 +132,100 @@ export default function Home(){
                   <span className="px-4 py-2 bg-white/10 rounded-full text-sm font-medium backdrop-blur-sm border border-white/10">
                     🌟 Unlimited
                   </span>
-                  <button className="px-8 py-3 bg-gradient-to-r from-green-500 to-cyan-500 rounded-xl font-bold shadow-lg shadow-green-500/30 group-hover:scale-105 transition-all duration-300">
+                  <button className="px-6 py-3 bg-gradient-to-r from-green-500 to-cyan-500 rounded-xl font-bold shadow-lg shadow-green-500/30 group-hover:scale-105 transition-all duration-300">
                     Create Now
                   </button>
                 </div>
               </div>
             </Link>
-          </div>
 
-          {/* Streak & Leaderboard Sidebar */}
-          <div className="space-y-6">
-            {/* Streak Card */}
-            {user && (
-              <div className="relative bg-gradient-to-br from-yellow-600/20 to-orange-600/20 p-6 rounded-3xl border border-yellow-500/30 text-center backdrop-blur-sm">
-                <div className="text-sm text-white/70 mb-4 font-medium">
-                  CURRENT STREAK
+            {/* Browse Quizzes Card */}
+            <Link 
+              to="/browse" 
+              className="group relative bg-gradient-to-br from-purple-600/15 to-pink-600/15 p-6 rounded-3xl border border-purple-500/20 hover:border-purple-400/40 transition-all duration-500 hover:scale-[1.02] backdrop-blur-sm"
+            >
+              <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-14 h-14 bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/30">
+                    <span className="text-2xl">🌎</span>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold bg-gradient-to-r from-purple-300 to-pink-400 bg-clip-text text-transparent">
+                      Browse Quizzes
+                    </div>
+                    <div className="text-sm text-white/60 font-medium">
+                      Play community quizzes
+                    </div>
+                  </div>
                 </div>
                 
-                <div className="text-6xl font-black bg-gradient-to-r from-yellow-300 via-orange-400 to-red-500 bg-clip-text text-transparent">
-                  {streak}
-                </div>
+                <p className="text-white/80 mb-6 text-lg leading-relaxed font-light">
+                  Explore and play quizzes created by other users
+                </p>
                 
-                <div className="text-sm font-semibold text-yellow-300/90 mt-4">
-                  {streak > 5 ? "FIRE STREAK! 🔥" : streak > 0 ? "Keep burning! 🔥" : "Start your journey!"}
+                <div className="flex items-center justify-between">
+                  <span className="px-4 py-2 bg-white/10 rounded-full text-sm font-medium backdrop-blur-sm border border-white/10">
+                    👥 Community
+                  </span>
+                  <button className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl font-bold shadow-lg shadow-purple-500/30 group-hover:scale-105 transition-all duration-300">
+                    Browse Now
+                  </button>
                 </div>
               </div>
-            )}
+            </Link>
+          </div>
+        </div>
 
-            {/* Leaderboard Card */}
-            <div className="bg-gradient-to-br from-purple-600/15 to-pink-600/15 p-6 rounded-3xl border border-purple-500/20 backdrop-blur-sm">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/30">
-                  <span className="text-lg">🏆</span>
+        {/* Leaderboard Section */}
+        <div className="flex justify-center mb-12">
+          <div className="max-w-4xl w-full">
+            <div className="bg-gradient-to-br from-purple-600/15 to-pink-600/15 p-8 rounded-3xl border border-purple-500/20 backdrop-blur-sm">
+              <div className="flex items-center gap-4 mb-8 justify-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/30">
+                  <span className="text-2xl">🏆</span>
                 </div>
-                <div>
-                  <div className="text-xl font-bold bg-gradient-to-r from-purple-300 to-pink-400 bg-clip-text text-transparent">Top Players</div>
-                  <div className="text-sm text-white/60 font-medium">Global rankings</div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold bg-gradient-to-r from-purple-300 to-pink-400 bg-clip-text text-transparent">
+                    Top Players
+                  </div>
+                  <div className="text-base text-white/60 font-medium">
+                    Global rankings
+                  </div>
                 </div>
               </div>
               
-              <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                 {leaderboard.length ? leaderboard.map((u, i) => (
                   <div 
                     key={i} 
-                    className={`flex items-center justify-between p-4 rounded-2xl backdrop-blur-sm border ${
-                      i === 0 ? 'bg-gradient-to-r from-yellow-500/15 to-orange-500/15 border-yellow-500/30' :
-                      i === 1 ? 'bg-gradient-to-r from-gray-400/15 to-gray-500/15 border-gray-400/30' :
-                      i === 2 ? 'bg-gradient-to-r from-orange-700/15 to-red-700/15 border-orange-700/30' :
+                    className={`flex flex-col items-center p-4 rounded-2xl backdrop-blur-sm border text-center ${
+                      i === 0 ? 'bg-gradient-to-b from-yellow-500/15 to-orange-500/15 border-yellow-500/30' :
+                      i === 1 ? 'bg-gradient-to-b from-gray-400/15 to-gray-500/15 border-gray-400/30' :
+                      i === 2 ? 'bg-gradient-to-b from-orange-700/15 to-red-700/15 border-orange-700/30' :
                       'bg-white/5 border-white/10'
                     }`}
                   >
-                    <div className="flex items-center gap-4">
-                      <div className={`w-8 h-8 rounded-2xl flex items-center justify-center text-sm font-black ${
-                        i === 0 ? 'bg-gradient-to-br from-yellow-400 to-orange-500 text-black' :
-                        i === 1 ? 'bg-gradient-to-br from-gray-300 to-gray-400 text-black' :
-                        i === 2 ? 'bg-gradient-to-br from-orange-600 to-red-700 text-white' :
-                        'bg-white/20 text-white'
-                      }`}>
-                        {i + 1}
-                      </div>
-                      <div className="font-semibold text-white/90 truncate max-w-[100px]">{u.name}</div>
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-black mb-3 ${
+                      i === 0 ? 'bg-gradient-to-br from-yellow-400 to-orange-500 text-black' :
+                      i === 1 ? 'bg-gradient-to-br from-gray-300 to-gray-400 text-black' :
+                      i === 2 ? 'bg-gradient-to-br from-orange-600 to-red-700 text-white' :
+                      'bg-white/20 text-white'
+                    }`}>
+                      {i + 1}
                     </div>
-                    <div className="flex items-center gap-2 font-bold text-white">
+                    <div className="font-semibold text-white/90 text-base mb-2 truncate w-full">
+                      {u.name}
+                    </div>
+                    <div className="flex items-center gap-2 font-bold text-white text-base">
                       {u.streak}
                       <span className="text-orange-400 text-lg">🔥</span>
                     </div>
                   </div>
                 )) : (
-                  <div className="text-center py-8 text-white/50">
-                    <div className="text-3xl mb-3">📊</div>
-                    <div className="text-sm font-medium mb-1">No rankings yet</div>
-                    <div className="text-xs">Be the first to make history!</div>
+                  <div className="col-span-full text-center py-8 text-white/50">
+                    <div className="text-4xl mb-4">📊</div>
+                    <div className="text-lg font-medium mb-2">No rankings yet</div>
+                    <div className="text-sm">Be the first to make history!</div>
                   </div>
                 )}
               </div>
@@ -205,39 +234,43 @@ export default function Home(){
         </div>
 
         {/* Auth Section */}
-        {!user ? (
-          <div className="relative bg-gradient-to-r from-blue-600/10 to-purple-600/10 p-10 rounded-3xl border border-blue-500/20 text-center backdrop-blur-sm">
-            <h3 className="text-3xl font-bold mb-4 bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent">
-              Ready to Begin Your Journey?
-            </h3>
-            <p className="text-white/70 mb-8 max-w-2xl mx-auto text-lg leading-relaxed font-light">
-              Join our community of learners and track your progress
-            </p>
-            <div className="flex gap-6 justify-center items-center">
-              <Link 
-                to="/register" 
-                className="px-10 py-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl font-bold text-lg shadow-2xl shadow-blue-500/30 hover:scale-105 transition-all duration-300"
-              >
-                🚀 Start Learning Free
-              </Link>
-              <Link 
-                to="/login" 
-                className="px-10 py-4 border-2 border-white/30 rounded-2xl font-bold text-lg backdrop-blur-sm hover:bg-white/10 transition-all duration-300"
-              >
-                🔑 Existing Account
-              </Link>
-            </div>
+        <div className="flex justify-center">
+          <div className="max-w-2xl w-full">
+            {!user ? (
+              <div className="relative bg-gradient-to-r from-blue-600/10 to-purple-600/10 p-8 rounded-3xl border border-blue-500/20 text-center backdrop-blur-sm">
+                <h3 className="text-3xl font-bold mb-4 bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent">
+                  Ready to Begin Your Journey?
+                </h3>
+                <p className="text-white/70 mb-6 text-lg leading-relaxed font-light">
+                  Join our community of learners and track your progress
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                  <Link 
+                    to="/register" 
+                    className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl font-bold text-lg shadow-2xl shadow-blue-500/30 hover:scale-105 transition-all duration-300 w-full sm:w-auto text-center"
+                  >
+                    🚀 Start Learning Free
+                  </Link>
+                  <Link 
+                    to="/login" 
+                    className="px-8 py-4 border-2 border-white/30 rounded-2xl font-bold text-lg backdrop-blur-sm hover:bg-white/10 transition-all duration-300 w-full sm:w-auto text-center"
+                  >
+                    🔑 Existing Account
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <div className="relative bg-gradient-to-r from-green-600/10 to-cyan-600/10 p-6 rounded-3xl border border-green-500/20 text-center backdrop-blur-sm">
+                <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-green-300 to-cyan-400 bg-clip-text text-transparent">
+                  Welcome back, {user.name || user.username}! 👋
+                </h3>
+                <p className="text-white/70 text-lg font-light">
+                  Continue your learning adventure today!
+                </p>
+              </div>
+            )}
           </div>
-        ) : (
-          <div className="relative bg-gradient-to-r from-green-600/10 to-cyan-600/10 p-8 rounded-3xl border border-green-500/20 text-center backdrop-blur-sm">
-            <h3 className="text-2xl font-bold mb-3 bg-gradient-to-r from-green-300 to-cyan-400 bg-clip-text text-transparent">
-              Welcome back, {user.name || user.username}! 👋
-            </h3>
-            <p className="text-white/70 text-lg font-light">
-              Continue your learning adventure today!
-            </p>
-          </div>
-        )}
+        </div>
       </div>
 
       {/* Add CSS for floating animation */}

@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import DailyQuiz from "./pages/DailyQuiz";
 import CreateQuiz from "./pages/CreateQuiz";
+import BrowseQuizzes from "./pages/BrowseQuizzes"; // Naya component import karein
 import PlayCustomQuiz from "./pages/PlayCustomQuiz";
 import Result from "./pages/Result";
 import Profile from "./pages/Profile";
@@ -21,7 +22,9 @@ export default function App(){
           <Route path="/" element={<Home/>} />
           <Route path="/daily" element={<ProtectedRoute><DailyQuiz/></ProtectedRoute>} />
           <Route path="/create" element={<ProtectedRoute><CreateQuiz/></ProtectedRoute>} />
-          <Route path="/play/:id" element={<PlayCustomQuiz/>} />
+          <Route path="/browse" element={<BrowseQuizzes/>} /> {/* Naya route add karein */}
+          <Route path="/play-custom/:id" element={<PlayCustomQuiz/>} /> {/* Route fix karein */}
+          <Route path="/play/:id" element={<PlayCustomQuiz/>} /> {/* Backup route */}
           <Route path="/result/:attemptId" element={<Result/>} />
           <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>} />
           <Route path="/login" element={<Login/>} />
